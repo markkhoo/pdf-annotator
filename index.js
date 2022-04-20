@@ -1,9 +1,9 @@
 var canvas = document.getElementById('myCanvas');
 var ctx = canvas.getContext('2d');
 
-// document.querySelector("#submit").addEventListener("click", function(event) {
-//   event.preventDefault();
-// }, false);
+//
+// Get the PDF File from input
+// adapted from: https://stackoverflow.com/questions/22048395/how-to-open-a-local-pdf-in-pdfjs-using-file-input
 
 //Step 1: Get the file from the input element                
 document.querySelector("#pdf-file").onchange = function (event) {
@@ -24,7 +24,10 @@ document.querySelector("#pdf-file").onchange = function (event) {
       // The document is loaded here...
       console.log('PDF loaded...');
 
+      //
       // Outputs the PDF onto the Canvas
+      // adapted from: https://stackoverflow.com/questions/58590845/draw-rectangle-in-canvas-with-loaded-pdf-file-using-pdf-js
+
       pdf.getPage(1).then(function (page) {
         var viewport = page.getViewport({ scale: 1 });
         canvas.height = viewport.height;
@@ -43,12 +46,16 @@ document.querySelector("#pdf-file").onchange = function (event) {
           // }
         });
       });
+
     });
   };
   //Step 3:Read the file as ArrayBuffer
   fileReader.readAsArrayBuffer(file);
-
 }
+
+//
+// Draw red Rectangles onto the Canvas
+// adapted from: http://jsfiddle.net/bfka8cdh/
 
 // style the context
 ctx.strokeStyle = "red";
@@ -69,7 +76,6 @@ var isDown = false;
 // these vars will hold the starting mouse position
 var startX;
 var startY;
-
 
 function handleMouseDown(e) {
   e.preventDefault();
@@ -118,25 +124,6 @@ function handleMouseMove(e) {
   if (!isDown) {
     return;
   }
-
-  // // get the current mouse position
-  // mouseX = parseInt(e.clientX - offsetX);
-  // mouseY = parseInt(e.clientY - offsetY);
-
-  // // Put your mousemove stuff here
-
-  // // clear the canvas
-  // ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-  // // calculate the rectangle width/height based
-  // // on starting vs current mouse position
-  // var width = mouseX - startX;
-  // var height = mouseY - startY;
-
-  // // draw a new rect from the start position 
-  // // to the current mouse position
-  // ctx.strokeRect(startX, startY, width, height);
-
 }
 
 // listen for mouse events
@@ -152,6 +139,10 @@ $("#myCanvas").mouseup(function (e) {
 $("#myCanvas").mouseout(function (e) {
   handleMouseOut(e);
 });
+
+//
+// Downloading the marked-up PDF
+// adapted from: https://stackoverflow.com/questions/23681325/convert-canvas-to-pdf
 
 document.querySelector("#download").addEventListener("click", function() {
   // only jpeg is supported by jsPDF
