@@ -1,4 +1,7 @@
 # pdf-annotator
+Visit the site [HERE](https://markkhoo.github.io/pdf-annotator/).
+
+## Description
 A 3-hour programing challenge: Given a PDF file (sample.pdf), create a web or mobile application that allows a user to annotate the PDF file with a red polygon resulting in what you see in final.pdf.
 
 This solution is rudimentary adapting code snippets from 4 sources:
