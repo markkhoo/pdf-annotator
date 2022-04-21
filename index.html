@@ -5,6 +5,7 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="./styles.css">
   <!-- jQuery -->
   <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
   <!-- pdf.js -->
@@ -23,10 +24,14 @@
       <label for="pdf-file">Upload File</label> <br>
       <input type="file" id="pdf-file" name="pdf-file"> <br><br>
     </form>
-    <br><br>
-    <canvas id="myCanvas" width="578" height="200"></canvas>
-    <br><br>
     <button id="download">Download</button>
+    <br><br>
+    <div id="wrapper">
+      <canvas id="canvas" width="300" height="200"></canvas>
+      <canvas id="canvas2" width="300" height="200"></canvas>
+    </div>
+    <br><br>
+    
   </main>
 
   <script src="./index.js"></script>

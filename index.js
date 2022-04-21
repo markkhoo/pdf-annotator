@@ -1,5 +1,7 @@
-var canvas = document.getElementById('myCanvas');
+var canvas = document.getElementById('canvas');
 var ctx = canvas.getContext('2d');
+var canvas2 = document.getElementById('canvas2');
+var ctx2 = canvas2.getContext('2d');
 
 //
 // Get the PDF File from input
@@ -44,6 +46,8 @@ document.querySelector("#pdf-file").onchange = function (event) {
           //   renderPage(pageNumPending);
           //   pageNumPending = null;
           // }
+          canvas2.height = viewport.height;
+          canvas2.width = viewport.width;
         });
       });
 
@@ -57,18 +61,14 @@ document.querySelector("#pdf-file").onchange = function (event) {
 // Draw red Rectangles onto the Canvas
 // adapted from: http://jsfiddle.net/bfka8cdh/
 
-// style the context
-ctx.strokeStyle = "red";
-ctx.lineWidth = 3;
-
 // calculate where the canvas is on the window
 // (used to help calculate mouseX/mouseY)
-var $canvas = $("#myCanvas");
-var canvasOffset = $canvas.offset();
+var $canvas2 = $("#canvas2");
+var canvasOffset = $canvas2.offset();
 var offsetX = canvasOffset.left;
 var offsetY = canvasOffset.top;
-var scrollX = $canvas.scrollLeft();
-var scrollY = $canvas.scrollTop();
+var scrollX = $canvas2.scrollLeft();
+var scrollY = $canvas2.scrollTop();
 
 // this flage is true when the user is dragging the mouse
 var isDown = false;
@@ -96,15 +96,14 @@ function handleMouseUp(e) {
   // the drag is over, clear the dragging flag
   isDown = false;
 
+  //
+  // style the context
   ctx.strokeStyle = "red";
   ctx.lineWidth = 3;
-
   mouseX = parseInt(e.clientX - offsetX);
   mouseY = parseInt(e.clientY - offsetY);
-
   var width = mouseX - startX;
   var height = mouseY - startY;
-
   ctx.strokeRect(startX, startY, width, height);
 }
 
@@ -120,23 +119,45 @@ function handleMouseMove(e) {
   e.preventDefault();
   e.stopPropagation();
 
+  ctx2.strokeStyle = "red";
+  ctx2.lineWidth = 3;
+
   // if we're not dragging, just return
   if (!isDown) {
     return;
   }
+
+  // get the current mouse position
+  mouseX = parseInt(e.clientX - offsetX);
+  mouseY = parseInt(e.clientY - offsetY);
+
+  // Put your mousemove stuff here
+
+  // clear the canvas
+  ctx2.clearRect(0, 0, canvas2.width, canvas2.height);
+
+  // calculate the rectangle width/height based
+  // on starting vs current mouse position
+  var width = mouseX - startX;
+  var height = mouseY - startY;
+
+  // draw a new rect from the start position 
+  // to the current mouse position
+  ctx2.strokeRect(startX, startY, width, height);
+
 }
 
 // listen for mouse events
-$("#myCanvas").mousedown(function (e) {
+$("#canvas2").mousedown(function (e) {
   handleMouseDown(e);
 });
-$("#myCanvas").mousemove(function (e) {
+$("#canvas2").mousemove(function (e) {
   handleMouseMove(e);
 });
-$("#myCanvas").mouseup(function (e) {
+$("#canvas2").mouseup(function (e) {
   handleMouseUp(e);
 });
-$("#myCanvas").mouseout(function (e) {
+$("#canvas2").mouseout(function (e) {
   handleMouseOut(e);
 });
 
@@ -144,7 +165,7 @@ $("#myCanvas").mouseout(function (e) {
 // Downloading the marked-up PDF
 // adapted from: https://stackoverflow.com/questions/23681325/convert-canvas-to-pdf
 
-document.querySelector("#download").addEventListener("click", function() {
+document.querySelector("#download").addEventListener("click", function () {
   // only jpeg is supported by jsPDF
   var imgData = canvas.toDataURL("image/jpeg", 1.0);
   var pdf = new jspdf.jsPDF();
